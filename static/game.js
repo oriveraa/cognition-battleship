@@ -19,9 +19,10 @@ class BattleshipGame {
         this.computerHits = new Set();
         this.computerMisses = new Set();
         this.currentTurn = 'player';
+        this.debugMode = false;
         
         this.initializeEventListeners();
-        this.showPhase('setup');
+        this.showPhase('mode-select');
         this.updateCurrentShipDisplay();
         this.renderBoard('setupBoard', this.playerBoard, true);
     }
@@ -31,6 +32,10 @@ class BattleshipGame {
     }
 
     initializeEventListeners() {
+        // Mode selection
+        document.getElementById('playModeBtn').addEventListener('click', () => this.selectMode(false));
+        document.getElementById('debugModeBtn').addEventListener('click', () => this.selectMode(true));
+        
         // Setup phase
         document.getElementById('placeShipBtn').addEventListener('click', () => this.placeCurrentShip());
         document.getElementById('autoPlaceBtn').addEventListener('click', () => this.autoPlaceShips());
@@ -295,10 +300,21 @@ class BattleshipGame {
         return true;
     }
 
+    selectMode(isDebug) {
+        this.debugMode = isDebug;
+        this.showPhase('setup');
+        this.updateCurrentShipDisplay();
+        this.renderBoard('setupBoard', this.playerBoard, true);
+    }
+
     startGame() {
         this.placeComputerShips();
         this.currentPhase = 'play';
         this.showPhase('play');
+        
+        // Show/hide debug controls based on mode
+        document.getElementById('debugControls').style.display = this.debugMode ? 'block' : 'none';
+        
         this.renderBoards();
         this.updateShipsCount();
         this.showMessage('Game started! Your turn to attack!');
@@ -585,6 +601,10 @@ class BattleshipGame {
         
         this.currentPhase = 'play';
         this.showPhase('play');
+        
+        // Preserve debug controls visibility based on mode
+        document.getElementById('debugControls').style.display = this.debugMode ? 'block' : 'none';
+        
         this.renderBoards();
         this.updateShipsCount();
         this.updateTurnIndicator();
@@ -593,7 +613,7 @@ class BattleshipGame {
 
     newGame() {
         // Reset everything
-        this.currentPhase = 'setup';
+        this.currentPhase = 'mode-select';
         this.currentShip = 'Carrier';
         this.playerBoard = this.createEmptyBoard();
         this.computerBoard = this.createEmptyBoard();
@@ -617,10 +637,8 @@ class BattleshipGame {
         document.getElementById('attackCoord').value = '';
         
         this.updateCurrentShipDisplay();
-        this.showPhase('setup');
-        this.renderBoard('setupBoard', this.playerBoard, true);
-        this.renderBoard('playerBoard', this.playerBoard, true);
-        this.showMessage('New game started! Place your ships to begin.');
+        this.showPhase('mode-select');
+        this.showMessage('Choose your game mode to begin.');
     }
 
     showPhase(phase) {
@@ -628,7 +646,13 @@ class BattleshipGame {
             element.style.display = 'none';
         });
         
-        const phaseElement = document.getElementById(`${phase === 'setup' ? 'game-setup' : phase === 'play' ? 'game-play' : 'game-over'}`);
+        const phaseMap = {
+            'mode-select': 'mode-select',
+            'setup': 'game-setup',
+            'play': 'game-play',
+            'gameover': 'game-over'
+        };
+        const phaseElement = document.getElementById(phaseMap[phase] || phase);
         if (phaseElement) {
             phaseElement.style.display = 'block';
         }

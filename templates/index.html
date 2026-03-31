@@ -14,7 +14,26 @@
         </header>
 
         <main>
-            <div id="game-setup" class="game-phase">
+            <div id="mode-select" class="game-phase">
+                <div class="mode-select-container">
+                    <h2>Choose Your Mode</h2>
+                    <p class="mode-description">Select how you'd like to play:</p>
+                    <div class="mode-buttons">
+                        <button id="playModeBtn" class="btn btn-primary mode-btn">
+                            <span class="mode-icon">&#9875;</span>
+                            <span class="mode-title">Play Game</span>
+                            <span class="mode-subtitle">Classic Battleship experience</span>
+                        </button>
+                        <button id="debugModeBtn" class="btn btn-warning mode-btn">
+                            <span class="mode-icon">&#128295;</span>
+                            <span class="mode-title">Debug Mode</span>
+                            <span class="mode-subtitle">Includes debug tools to win instantly</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-setup" class="game-phase" style="display: none;">
                 <div class="setup-container">
                     <h2>Place Your Ships</h2>
                     <div class="setup-content">
@@ -127,7 +146,7 @@
                         <input type="text" id="attackCoord" placeholder="Target (e.g., A5)" maxlength="3">
                         <button id="attackBtn" class="btn btn-primary">Attack!</button>
                     </div>
-                    <div class="debug-controls">
+                    <div class="debug-controls" id="debugControls" style="display: none;">
                         <button id="winGameBtn" class="btn btn-warning">Win Game (Debug)</button>
                     </div>
                     <button id="quitBtn" class="btn btn-danger">Quit Game</button>
