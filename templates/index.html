@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognition Battleship - Web Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚓ Cognition Battleship</h1>
+            <p>Created by Oscar Rivera using Windsurf</p>
+        </header>
+
+        <main>
+            <div id="game-setup" class="game-phase">
+                <div class="setup-container">
+                    <h2>Place Your Ships</h2>
+                    <div class="setup-content">
+                        <div class="ships-panel">
+                            <div class="ships-list">
+                                <div class="ship-item" data-ship="Carrier" data-size="5">
+                                    <span class="ship-name">Carrier</span>
+                                    <span class="ship-size">5 spaces</span>
+                                    <span class="ship-status">Not placed</span>
+                                </div>
+                                <div class="ship-item" data-ship="Battleship" data-size="4">
+                                    <span class="ship-name">Battleship</span>
+                                    <span class="ship-size">4 spaces</span>
+                                    <span class="ship-status">Not placed</span>
+                                </div>
+                                <div class="ship-item" data-ship="Cruiser" data-size="3">
+                                    <span class="ship-name">Cruiser</span>
+                                    <span class="ship-size">3 spaces</span>
+                                    <span class="ship-status">Not placed</span>
+                                </div>
+                                <div class="ship-item" data-ship="Submarine" data-size="3">
+                                    <span class="ship-name">Submarine</span>
+                                    <span class="ship-size">3 spaces</span>
+                                    <span class="ship-status">Not placed</span>
+                                </div>
+                                <div class="ship-item" data-ship="Destroyer" data-size="2">
+                                    <span class="ship-name">Destroyer</span>
+                                    <span class="ship-size">2 spaces</span>
+                                    <span class="ship-status">Not placed</span>
+                                </div>
+                            </div>
+                            
+                            <div class="placement-controls">
+                                <div class="coordinate-input">
+                                    <label>Starting Position:</label>
+                                    <input type="text" id="startCoord" placeholder="e.g., A5" maxlength="3">
+                                </div>
+                                <div class="orientation-controls">
+                                    <label>Orientation:</label>
+                                    <div class="radio-group">
+                                        <label><input type="radio" name="orientation" value="horizontal" checked> Horizontal</label>
+                                        <label><input type="radio" name="orientation" value="vertical"> Vertical</label>
+                                    </div>
+                                </div>
+                                <button id="placeShipBtn" class="btn btn-primary">Place Ship</button>
+                                <button id="autoPlaceBtn" class="btn btn-secondary">Auto Place All</button>
+                                <button id="startGameBtn" class="btn btn-success" style="display: none;">Start Game</button>
+                            </div>
+                        </div>
+                        
+                        <div class="board-panel">
+                            <h3>Your Board</h3>
+                            <div class="board-container">
+                                <div class="board-grid">
+                                    <div class="board-label corner"></div>
+                                    <!-- Column labels will be added by JavaScript -->
+                                    <!-- Row labels will be added by JavaScript -->
+                                    <div id="setupBoard" class="board player-board"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-play" class="game-phase" style="display: none;">
+                <div class="game-boards">
+                    <div class="board-section">
+                        <h3>Your Board</h3>
+                        <div class="board-container">
+                            <div class="board-grid">
+                                <div class="board-label corner"></div>
+                                <!-- Column labels will be added by JavaScript -->
+                                <!-- Row labels will be added by JavaScript -->
+                                <div id="playerBoard" class="board player-board"></div>
+                            </div>
+                        </div>
+                        <div class="board-info">
+                            <div class="ships-remaining">
+                                <span>Ships Remaining: </span>
+                                <span id="playerShipsCount">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="board-section">
+                        <h3>Computer Board</h3>
+                        <div class="board-container">
+                            <div class="board-grid">
+                                <div class="board-label corner"></div>
+                                <!-- Column labels will be added by JavaScript -->
+                                <!-- Row labels will be added by JavaScript -->
+                                <div id="computerBoard" class="board computer-board"></div>
+                            </div>
+                        </div>
+                        <div class="board-info">
+                            <div class="ships-remaining">
+                                <span>Ships Remaining: </span>
+                                <span id="computerShipsCount">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-controls">
+                    <div class="turn-indicator">
+                        <span id="currentTurn">Your Turn</span>
+                    </div>
+                    <div class="attack-controls">
+                        <input type="text" id="attackCoord" placeholder="Target (e.g., A5)" maxlength="3">
+                        <button id="attackBtn" class="btn btn-primary">Attack!</button>
+                    </div>
+                    <div class="debug-controls">
+                        <button id="winGameBtn" class="btn btn-warning">Win Game (Debug)</button>
+                    </div>
+                    <button id="quitBtn" class="btn btn-danger">Quit Game</button>
+                </div>
+            </div>
+
+            <div id="game-over" class="game-phase" style="display: none;">
+                <div class="game-over-container">
+                    <h2 id="gameOverTitle">Game Over</h2>
+                    <p id="gameOverMessage"></p>
+                    <div class="final-boards">
+                        <div class="final-board">
+                            <h3>Your Final Board</h3>
+                            <div class="board-container">
+                                <div class="board-grid">
+                                    <div class="board-label corner"></div>
+                                    <!-- Column labels will be added by JavaScript -->
+                                    <!-- Row labels will be added by JavaScript -->
+                                    <div id="finalPlayerBoard" class="board"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="final-board">
+                            <h3>Computer Final Board</h3>
+                            <div class="board-container">
+                                <div class="board-grid">
+                                    <div class="board-label corner"></div>
+                                    <!-- Column labels will be added by JavaScript -->
+                                    <!-- Row labels will be added by JavaScript -->
+                                    <div id="finalComputerBoard" class="board"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-over-actions">
+                        <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+                        <button id="newGameBtn" class="btn btn-secondary">New Game</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="messageModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p id="modalMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>
