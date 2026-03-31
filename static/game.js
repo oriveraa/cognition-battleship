@@ -601,6 +601,10 @@ class BattleshipGame {
         
         this.currentPhase = 'play';
         this.showPhase('play');
+        
+        // Preserve debug controls visibility based on mode
+        document.getElementById('debugControls').style.display = this.debugMode ? 'block' : 'none';
+        
         this.renderBoards();
         this.updateShipsCount();
         this.updateTurnIndicator();
