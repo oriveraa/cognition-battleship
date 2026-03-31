@@ -637,28 +637,33 @@ class BattleshipGame {
     }
 
     playAgain() {
-        // Keep same ships, just reset the game state
+        // Reset game state but keep the same mode
+        this.currentShip = 'Carrier';
+        this.playerBoard = this.createEmptyBoard();
+        this.computerBoard = this.createEmptyBoard();
+        this.playerShips = {};
+        this.computerShips = {};
         this.playerHits = new Set();
         this.playerMisses = new Set();
         this.computerHits = new Set();
         this.computerMisses = new Set();
         this.currentTurn = 'player';
         
-        // Reset computer ships
-        this.computerBoard = this.createEmptyBoard();
-        this.computerShips = {};
-        this.placeComputerShips();
+        // Reset ship UI
+        document.querySelectorAll('.ship-item').forEach(item => {
+            item.classList.remove('placed', 'current');
+            item.querySelector('.ship-status').textContent = 'Not placed';
+        });
         
-        this.currentPhase = 'play';
-        this.showPhase('play');
+        document.getElementById('startGameBtn').style.display = 'none';
+        document.getElementById('placeShipBtn').disabled = false;
+        document.getElementById('startCoord').value = '';
+        document.getElementById('attackCoord').value = '';
         
-        // Preserve debug controls visibility based on mode
-        document.getElementById('debugControls').style.display = this.debugMode ? 'block' : 'none';
-        
-        this.renderBoards();
-        this.updateShipsCount();
-        this.updateTurnIndicator();
-        this.showMessage('New game started! Your turn to attack!');
+        this.updateCurrentShipDisplay();
+        this.renderBoard('setupBoard', this.playerBoard, true);
+        this.showPhase('setup');
+        this.showMessage('Place your ships to begin a new game!');
     }
 
     newGame() {
