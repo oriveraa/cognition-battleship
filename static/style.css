@@ -49,6 +49,65 @@ header p {
     color: #F1F5F9;
 }
 
+/* Mode Selection */
+.mode-select-container {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.mode-select-container h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #F1F5F9;
+}
+
+.mode-description {
+    font-size: 1.1rem;
+    color: #94A3B8;
+    margin-bottom: 40px;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 30px 40px;
+    border-radius: 15px;
+    min-width: 250px;
+    transition: all 0.3s ease;
+}
+
+.mode-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.mode-icon {
+    font-size: 3rem;
+}
+
+.mode-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.mode-subtitle {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
 /* Setup Phase */
 .setup-container h2 {
     text-align: center;
