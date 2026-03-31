@@ -152,8 +152,8 @@ header p {
     border: 2px solid #334155;
     border-radius: 10px;
     padding: 15px;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -191,6 +191,7 @@ header p {
 .ship-size {
     color: #94A3B8;
     font-size: 0.9rem;
+    text-align: center;
 }
 
 .ship-status {
@@ -199,6 +200,7 @@ header p {
     border-radius: 12px;
     background: #374151;
     color: #9CA3AF;
+    justify-self: end;
 }
 
 .ship-item.placed .ship-status {
