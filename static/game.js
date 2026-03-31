@@ -382,7 +382,7 @@ class BattleshipGame {
     }
 
     isHitPosition(boardId, row, col) {
-        if (boardId === 'playerBoard') {
+        if (boardId === 'playerBoard' || boardId === 'finalPlayerBoard') {
             return this.computerHits.has(`${row},${col}`);
         } else {
             return this.playerHits.has(`${row},${col}`);
@@ -390,7 +390,7 @@ class BattleshipGame {
     }
 
     isMissPosition(boardId, row, col) {
-        if (boardId === 'playerBoard') {
+        if (boardId === 'playerBoard' || boardId === 'finalPlayerBoard') {
             return this.computerMisses.has(`${row},${col}`);
         } else {
             return this.playerMisses.has(`${row},${col}`);
