@@ -57,6 +57,11 @@ class BattleshipGame {
         document.getElementById('startCoord').addEventListener('input', (e) => this.validateCoordinate(e.target));
         document.getElementById('attackCoord').addEventListener('input', (e) => this.validateCoordinate(e.target));
         
+        // Ship selection by clicking
+        document.querySelectorAll('.ship-item').forEach(item => {
+            item.addEventListener('click', () => this.selectShip(item.dataset.ship));
+        });
+
         // Board preview
         document.getElementById('startCoord').addEventListener('input', () => this.previewShipPlacement());
         document.querySelectorAll('input[name="orientation"]').forEach(radio => {
@@ -156,8 +161,26 @@ class BattleshipGame {
         const shipNames = Object.keys(this.ships);
         const currentIndex = shipNames.indexOf(this.currentShip);
         
-        if (currentIndex < shipNames.length - 1) {
-            this.currentShip = shipNames[currentIndex + 1];
+        // Find the next unplaced ship starting after the current one
+        let nextShip = null;
+        for (let i = currentIndex + 1; i < shipNames.length; i++) {
+            if (!this.playerShips[shipNames[i]]) {
+                nextShip = shipNames[i];
+                break;
+            }
+        }
+        // If none found after current, wrap around and check before current
+        if (!nextShip) {
+            for (let i = 0; i < currentIndex; i++) {
+                if (!this.playerShips[shipNames[i]]) {
+                    nextShip = shipNames[i];
+                    break;
+                }
+            }
+        }
+        
+        if (nextShip) {
+            this.currentShip = nextShip;
             this.updateCurrentShipDisplay();
         } else {
             this.currentShip = null;
@@ -165,6 +188,20 @@ class BattleshipGame {
             document.getElementById('placeShipBtn').disabled = true;
             this.showMessage('All ships placed! Click "Start Game" to begin.');
         }
+    }
+
+    selectShip(shipName) {
+        // Only allow selecting ships that haven't been placed yet
+        if (this.playerShips[shipName]) {
+            this.showMessage(`${shipName} has already been placed!`);
+            return;
+        }
+        
+        this.currentShip = shipName;
+        document.getElementById('placeShipBtn').disabled = false;
+        this.updateCurrentShipDisplay();
+        this.clearPreview();
+        this.previewShipPlacement();
     }
 
     updateCurrentShipDisplay() {
