@@ -67,6 +67,18 @@ class BattleshipGame {
         document.querySelectorAll('input[name="orientation"]').forEach(radio => {
             radio.addEventListener('change', () => this.previewShipPlacement());
         });
+
+        // Click on setup board grid to set starting position
+        document.getElementById('setupBoard').addEventListener('click', (e) => {
+            const cell = e.target.closest('.cell');
+            if (cell && this.currentPhase === 'setup' && this.currentShip) {
+                const row = parseInt(cell.dataset.row);
+                const col = parseInt(cell.dataset.col);
+                const coordStr = String.fromCharCode(65 + col) + (row + 1);
+                document.getElementById('startCoord').value = coordStr;
+                this.previewShipPlacement();
+            }
+        });
     }
 
     validateCoordinate(input) {
@@ -258,6 +270,7 @@ class BattleshipGame {
             cell.classList.remove('preview', 'preview-invalid');
         });
     }
+
 
     autoPlaceShips() {
         // Clear existing ships
